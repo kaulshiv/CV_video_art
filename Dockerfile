@@ -1,20 +1,25 @@
 FROM ubuntu:16.04
 
+# Add some metadata 
+LABEL maintainer="kaulshiv"
+
 RUN apt-get update && \
         apt-get install -y software-properties-common && \
         add-apt-repository ppa:deadsnakes/ppa && \
         apt-get update -y  && \
         apt-get install -y build-essential python3.6 python3.6-dev python3-pip libgl1-mesa-glx && \
-        apt-get install -y git  wget && \
+        apt-get install -y  wget git && \
         # update pip
         python3.6 -m pip install pip --upgrade && \
         python3.6 -m pip install wheel
 
-WORKDIR /src
-COPY . .
-RUN pip3 install -r requirements.txt && pip3 install jupyter
 
-RUN wget --proxy=off https://github.com/matterport/Mask_RCNN/releases/download/v2.0/mask_rcnn_coco.h5
+WORKDIR /src
+COPY ./requirements.txt .
+RUN pip3 install -r requirements.txt && pip3 install jupyter && rm requirements.txt
+
+# Download Mask RCNN weights
+RUN wget --proxy=off https://github.com/matterport/Mask_RCNN/releases/download/v2.0/mask_rcnn_coco.h5 
 
 # Install Mask RCNN 
 RUN git clone https://github.com/matterport/Mask_RCNN.git && \
@@ -22,7 +27,7 @@ RUN git clone https://github.com/matterport/Mask_RCNN.git && \
         pip3 install -r requirements.txt && \
         python3.6 setup.py install
 
-# # Install Coco Dependencies
+# Install Coco Dependencies
 RUN git clone https://github.com/waleedka/coco && \
         cd coco/PythonAPI/ && \
         python3.6 setup.py build_ext install && \
@@ -35,6 +40,5 @@ RUN chmod +x /usr/bin/tini
 ENTRYPOINT ["/usr/bin/tini", "--"]
 
 
-WORKDIR "/src"
-
 CMD ["jupyter", "notebook", "--port=8888", "--no-browser", "--ip=0.0.0.0", "--allow-root"]
+# CMD [ "/bin/bash" ]

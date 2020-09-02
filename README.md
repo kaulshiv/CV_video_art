@@ -5,9 +5,9 @@
 
 ## Instructions
 
-If you simply want to view the code in a nice format click [here](./cv_art.html)!
+If you simply want to view the code in a visually appealing but non-interactive format click [here](https://nbviewer.jupyter.org/github/kaulshiv/CV_video_art/blob/master/cv_art.ipynb)!
 
-If you want to modify the code, then...
+If you want to modify the code on your own machine, then...
 
 1. Install [docker](https://docs.docker.com/get-docker/).
 2. Run `make build`

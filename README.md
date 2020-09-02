@@ -5,6 +5,9 @@
 
 ## Instructions
 
+If you simply want to view the code in a nice format click [here](./cv_art.html)!
+
+If you want to modify the code, then...
 
 1. Install [docker](https://docs.docker.com/get-docker/).
 2. Run `make build`
